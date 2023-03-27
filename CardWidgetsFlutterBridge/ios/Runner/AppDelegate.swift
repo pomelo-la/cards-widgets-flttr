@@ -14,28 +14,45 @@ import PomeloCards
     
     override func application( _ application: UIApplication,
                              didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? ) -> Bool {
-      
+    
         let controller : FlutterViewController = HomeViewController()
         self.window = UIWindow(frame: UIScreen.main.bounds)
+        
         navigationController = UINavigationController(rootViewController: controller)
         window?.rootViewController = navigationController
         window.makeKeyAndVisible()
 
         setupPomeloSDK()
+        
           ///Channel declaration,  setup the safe communication bridge between iOS and flutter
           ///The channel identifier is the same from both sides
         messageChannel = FlutterMethodChannel(name: "com.example.app/message", binaryMessenger: controller.binaryMessenger)
         messageChannel?.setMethodCallHandler({ [weak self] (call: FlutterMethodCall,
                                                             result: @escaping FlutterResult) -> Void in
-                let method = call.method
+            
+                let method = call.method // launchCardViewWidget
                 let widgetController = self?.flutterMethodManager.launchWidget(by: method)
                 self?.navigationController?.present( widgetController!, animated: true)
-                
+
                 ///Flutter communication
                 self?.receiveMessageFromFlutter(message: method)
                 result("Received message with method: \(method)")
             })
       
+        //register plugin to render native views in flutter environment
+        GeneratedPluginRegistrant.register(with: self)
+        ///Revisar por que crashea, posible ticket a flutter devs
+        
+//        let registry = self.registrar(forPlugin: "plugin-name-1234")
+//
+//        let factory = FlutterNativeHostingViewFactory(messenger: registry!.messenger())
+//        self.registrar(forPlugin: "<plugin-name-1234>")?.register(
+//            factory,
+//            withId: "CardPlatformView")
+//
+//        ///
+//        ///
+        
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
   
@@ -47,6 +64,7 @@ import PomeloCards
     
     ///Response back to Flutter,  trigger a new channel method if prefered
     private func receiveMessageFromFlutter(message: String) {
+        
         messageChannel?.invokeMethod("receivedMessageFromiOSSide", arguments: [message])
     }
 }

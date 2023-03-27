@@ -1,5 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
+
+import 'HostingNativeViews/AndroidHostingClass.dart';
+import 'HostingNativeViews/FlutterNativePlugin.dart';
 
 void main() {
   runApp(MyApp());
@@ -157,6 +165,7 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
               ]),
+              //FlutterNativePlugin()
             ],
           ),
         ),
