@@ -21,7 +21,7 @@ class FlutterNativePlugin extends StatelessWidget {
           creationParamsCodec: const StandardMessageCodec(),
         );
       default:
-        throw UnsupportedError("mensajefalopa");
+        throw UnsupportedError("inProgress");
     }
   }
 }
