@@ -43,7 +43,8 @@ class WidgetMethodsManager {
         let widgetChangePinViewController = PomeloWidgetChangePinViewController(cardId: Constants.cardId,
                                             completionHandler: { result in
           switch result {
-          case .success(): break
+          case .success():
+              self.pinChangedSuccessfully()
           case .failure(let error):
             print("Change pin error: \(error)")
           }
@@ -64,5 +65,13 @@ class WidgetMethodsManager {
           }
         })
         return widgetDetailViewController
+    }
+    
+    private func pinChangedSuccessfully() {
+        let alert = UIAlertView()
+        alert.title = "Pin change success "
+        alert.message = "The pin changed successfully"
+        alert.addButton(withTitle: "Ok")
+        alert.show()
     }
 }
